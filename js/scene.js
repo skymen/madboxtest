@@ -1,3 +1,4 @@
+/*----------INITIALISATIONS----------*/
 let game = new Game(); //Init scene
 let click = new ClickManager();
 //Init the two geometries
@@ -13,6 +14,7 @@ const material = new THREE.MeshBasicMaterial({
 const cube = new THREE.Mesh(boxGeometry, material);
 const sphere = new THREE.Mesh(circleGeometry, material);
 
+/*----------RECTANGLE----------*/
 //Add the box mesh to a game object
 let rect = new GameObject(game, cube, (self) => {
   //init
@@ -30,9 +32,9 @@ let rect = new GameObject(game, cube, (self) => {
 rect.setUpdateFunction((self) => {
   //update
   self.object.rotation.z += self.speed;
-  self.BBox
 })
 
+/*----------CIRCLE----------*/
 //Add the circle mesh to a game object
 let circle = new GameObject(game, sphere, (self) => {
   //init
@@ -53,6 +55,7 @@ let circle = new GameObject(game, sphere, (self) => {
     self.force.y = -20;
   });
 });
+
 circle.setUpdateFunction((self) => {
   //update
   self.speed.x += self.force.x / 60;
@@ -65,6 +68,8 @@ circle.setUpdateFunction((self) => {
     x: 0,
     y: -3
   }
+
+  //Since bounding box can't rotate, I rotate the sphere around it instead to simulate the collision
   let angle = -rect.object.rotation.z
   self.BSphere.center = {
     x: Math.cos(angle) * (self.object.position.x - center.x) - Math.sin(angle) * (self.object.position.y - center.y) + center.x,
@@ -72,37 +77,84 @@ circle.setUpdateFunction((self) => {
     z: self.object.position.z
   }
 
-  //circle.BSphere.getBoundingBox(circlebbox)
+  if (circlebbox) //This is only true if the debug helper code is running. This updates the sphere collider helper
+    circle.BSphere.getBoundingBox(circlebbox)
+
+  //If outside of screen, reset the game
   if(!game.isOnScreen(self.object)){
     game.reset()
   }
-  //self.object.geometry.computeBoundingSphere();
+
+
+  //Simple collision system
   let rectBBox = rect.object.geometry.boundingBox
   if (rectBBox.intersectsSphere(self.BSphere)){
-    console.log('interects')
-    //if (!self.hasInteracted){
-      angle = ((rect.object.rotation.z + Math.PI / 2) % Math.PI)
-      let temp = self.speed.x
-      // self.speed.x = self.speed.x * self.normal.x
-      // self.speed.y = self.speed.y * self.normal.y
-      self.speed.x = (Math.cos(angle) * (self.object.position.x) - Math.sin(angle) * (self.object.position.y))*3
-      self.speed.y = (Math.sin(angle) * (self.object.position.x) - Math.cos(angle) * (self.object.position.y))*3
-      console.log(self.speed)
-    //}
-    self.hasInteracted = true;
-  } else {
-    let raycaster = new THREE.Raycaster(self.object.position, new THREE.Vector3(0, -1, 0));
-    let intersects = raycaster.intersectObject(rect.object);
-    if (intersects[0]) {
-      self.normal = intersects[0].face.normal
-    }
-    self.hasInteracted = false;
+    //Set angle back between 0 and 2PI
+    let rectAngle = Math.abs((rect.object.rotation.z) % (2 * Math.PI))
+
+    //Calculate the normal angle
+    let normalAngle
+    if (rectAngle > Math.PI/2 + 0.1 && rectAngle <  3 * Math.PI / 2 - 0.1)
+      normalAngle = -rectAngle - Math.PI / 2
+    else if (rectAngle < Math.PI / 2 + 0.1 && rectAngle >  Math.PI / 2 - 0.1)
+      normalAngle = -rectAngle 
+    else if (rectAngle > 3 * Math.PI / 2 - 0.1 && rectAngle < 3 * Math.PI / 2 + 0.1)
+      normalAngle = -rectAngle - Math.PI
+    else
+      normalAngle = -rectAngle + Math.PI / 2
+
+    //Calculate incident angle
+    let incidentAngle = normalAngle - Math.PI / 2
+
+    //Get reflected angle
+    angle = normalAngle + incidentAngle
+
+    //Set speed
+    let totSpeed = Math.sqrt(Math.pow(self.speed.x, 2) + Math.pow(self.speed.y, 2))
+    self.speed.x = totSpeed * Math.cos(angle)
+    self.speed.y = totSpeed * Math.sin(angle)
   }
 })
-// let helper = new THREE.Box3Helper(rect.object.geometry.boundingBox, 0xffff00);
-// game.scene.add(helper);
 
-// let circlebbox = new THREE.Box3();
-// circle.BSphere.getBoundingBox(circlebbox)
-// let helper2 = new THREE.Box3Helper(circlebbox, 0xffff00);
-// game.scene.add(helper2);
+
+/*----------DEBUG HELPERS----------*/
+
+//Uncomment to see the helpers I setup 
+
+/*
+
+//This helper prints the rect BBox
+let helper = new THREE.Box3Helper(rect.object.geometry.boundingBox, 0xffff00);
+game.scene.add(helper);
+
+// This helper prints the sphere BBox
+let circlebbox = new THREE.Box3();
+circle.BSphere.getBoundingBox(circlebbox)
+let helper2 = new THREE.Box3Helper(circlebbox, 0xffff00);
+game.scene.add(helper2);
+
+//This helper prints the "normals" for the rectangle. It's actually just the same rect but rotated 90 degrees
+const material2 = new THREE.MeshBasicMaterial({
+  color: 0xffff00
+});
+const cube2 = new THREE.Mesh(boxGeometry, material2);
+
+let rect2 = new GameObject(game, cube2, (self) => {
+  //init
+  self.object.position.y = -3;
+  self.speed = -0.02
+  self.object.rotation.z = Math.PI / 2
+  self.object.geometry.computeBoundingBox();
+  self.BBox = self.object.geometry.boundingBox
+  self.BBox.translate(self.object.position)
+  console.log(self.BBox)
+  click.add(() => {
+    self.speed = 0;
+  });
+});
+rect2.setUpdateFunction((self) => {
+  //update
+  self.object.rotation.z += self.speed;
+  self.BBox
+})
+*/
