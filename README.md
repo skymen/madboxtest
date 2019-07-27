@@ -2,7 +2,7 @@
 Le test requis par Madbox
 
 # Le temps mis à réaliser l'exercice.
-Approximativement 7h répartis sur une journée de 10h du matin à 4h du matin.
+Approximativement 7h répartis sur une journée de 10h du matin à 3h du matin suivant.
 3h pour faire tout le code
 4h pour faire le système de collision
 
