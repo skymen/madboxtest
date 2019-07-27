@@ -24,7 +24,6 @@ let rect = new GameObject(game, cube, (self) => {
   self.object.geometry.computeBoundingBox();
   self.BBox = self.object.geometry.boundingBox
   self.BBox.translate(self.object.position)
-  console.log(self.BBox)
   click.add(()=>{
     self.speed = 0;
   });
@@ -147,7 +146,6 @@ let rect2 = new GameObject(game, cube2, (self) => {
   self.object.geometry.computeBoundingBox();
   self.BBox = self.object.geometry.boundingBox
   self.BBox.translate(self.object.position)
-  console.log(self.BBox)
   click.add(() => {
     self.speed = 0;
   });
