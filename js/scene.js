@@ -118,7 +118,8 @@ circle.setUpdateFunction((self) => {
 
 /*----------DEBUG HELPERS----------*/
 
-//Uncomment to see the helpers I setup 
+// Uncomment to see the helpers I setup. 
+// Make sure to uncomment line 80 of this file to allow the sphere helper to update properly
 
 /*
 

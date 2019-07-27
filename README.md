@@ -28,3 +28,5 @@ Après j'ai surtout pataugé parce que je connaissais pas trop three.js, donc la
 Même si l'énoncé mentionne que je n'ai pas de deadline, vous avez dit que je devais prouver que je pouvais finir une playable ad en moins d'une semaine. 
 Je sais pas exactemnt à quel point cet exercice permet de jauger ça. Surtout si vous avez déjà des systèmes de prêts.
 Après c'est pas à moi d'en juger vu que je manque d'infos, c'est juste que j'ai pas trouvé ce point super clair.
+
+A noter, dans le code y'a toute une partie commentée nommée "Debug Helpers". C'est les traces de quand j'ai fait plein de tests pour le système de collisions, donc je l'ai laissé au cas ou ça t'intéresserait de voir ce qu'il en est. Si tu le décommente fais aussi bien attention a décommenter la ligne 80 de scene.js aussi, sinon ça s'update pas bien.
