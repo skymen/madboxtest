@@ -24,7 +24,7 @@ L'exercice est asssez drôle, plutôt simple dans l'ensemble.
 J'avoue avoir sous estimé le système de collisions parce que je pensais pouvoir le faire aussi vite que j'ai fait le reste. 
 Après j'ai surtout pataugé parce que je connaissais pas trop three.js, donc la majorité de mon temps a été passé à lire de la doc.
 
-# Vos éventuels commentaires.
+# Mes éventuels commentaires.
 Même si l'énoncé mentionne que je n'ai pas de deadline, vous avez dit que je devais prouver que je pouvais finir une playable ad en moins d'une semaine. 
 Je sais pas exactemnt à quel point cet exercice permet de jauger ça. Surtout si vous avez déjà des systèmes de prêts.
 Après c'est pas à moi d'en juger vu que je manque d'infos, c'est juste que j'ai pas trouvé ce point super clair.
