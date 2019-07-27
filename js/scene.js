@@ -77,8 +77,8 @@ circle.setUpdateFunction((self) => {
     z: self.object.position.z
   }
 
-  if (circlebbox) //This is only true if the debug helper code is running. This updates the sphere collider helper
-    circle.BSphere.getBoundingBox(circlebbox)
+  //This is some debug helper code. This updates the sphere collider helper
+  //circle.BSphere.getBoundingBox(circlebbox)
 
   //If outside of screen, reset the game
   if(!game.isOnScreen(self.object)){
